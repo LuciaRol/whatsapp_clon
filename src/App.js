@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Registration from './components/registration';
+import Chat from './components/Chat';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [username, setUsername] = useState('');
+    const [profilePicture, setProfilePicture] = useState(null); // Initialize profilePicture as null
+
+    const handleRegister = (username, profilePicture) => {
+        setUsername(username);
+        setProfilePicture(profilePicture); // Set the profile picture
+    };
+
+    return (
+        <div>
+            {!username ? <Registration onRegister={handleRegister} /> : <Chat username={username} profilePicture={profilePicture} />} {/* Pass profilePicture to Chat component only if it's defined */}
+        </div>
+    );
+};
 
 export default App;
