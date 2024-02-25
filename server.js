@@ -13,6 +13,9 @@ const io = socketIo(server, {
   }
 });
 
+// Define an array to store connected users' information
+const connectedUsers = [];
+
 // Middleware for file uploads
 app.use(fileUpload());
 
@@ -23,6 +26,22 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 io.on('connection', (socket) => {
     console.log('New client connected');
 
+    /// Handling user registration
+    socket.on('register', ({ username, profilePicture, status }) => {
+        console.log('Received registration data:', username, profilePicture, status);
+        
+        // Save user information
+        connectedUsers.push({ id: socket.id, username, profilePicture, status });
+        console.log('User registered:', username);
+        console.log('Connected users:', connectedUsers);
+        
+        // Emit updated list of connected users to all clients
+        io.emit('connectedUsersUpdate', connectedUsers.map(user => user.username));
+        
+        // Emit socket ID back to client for future reference
+        socket.emit('registrationSuccess', socket.id);
+    });
+
     // Handling incoming messages
     socket.on('message', (data) => {
         console.log('Message received:', data);
@@ -30,13 +49,29 @@ io.on('connection', (socket) => {
         io.emit('message', data);
     });
 
-    // Handling disconnection
+   // Handling disconnection
     socket.on('disconnect', () => {
         console.log('Client disconnected');
+        // Remove the disconnected user from the array
+        const index = connectedUsers.findIndex(user => user.id === socket.id);
+        if (index !== -1) {
+            connectedUsers.splice(index, 1);
+            // Emit updated list of connected users to all clients
+            io.emit('connectedUsersUpdate', connectedUsers.map(user => user.username));
+        }
+    });
+
+    // Handle user status update
+    socket.on('updateStatus', (status) => {
+        const user = connectedUsers.find(u => u.id === socket.id);
+        if (user) {
+            user.status = status;
+            console.log('User status updated:', status);
+        }
     });
 });
 
-// Handle user registration
+// Handle user registration endpoint
 app.post('/register', (req, res) => {
     const { username } = req.body;
     const { profilePicture } = req.files;
@@ -51,12 +86,33 @@ app.post('/register', (req, res) => {
             } else {
                 // Send the URL of the uploaded image to the client along with the username
                 const imageUrl = `http://localhost:4000/uploads/${fileName}`;
+                // Send user registration data to the client
+                io.to(req.socketId).emit('registrationComplete', { username, profilePicture: imageUrl });
+                // Store user information on the server
+                connectedUsers.push({ id: req.socketId, username, profilePicture: imageUrl, status: 'online' });
                 res.json({ username, profilePicture: imageUrl });
             }
         });
     } else {
         // If no profile picture was uploaded, send only the username
+        // Send user registration data to the client
+        io.to(req.socketId).emit('registrationComplete', { username });
+        // Store user information on the server
+        connectedUsers.push({ id: req.socketId, username, status: 'online' });
         res.json({ username });
+    }
+});
+
+// Handle user status update endpoint
+app.post('/updateStatus', (req, res) => {
+    const { socketId, status } = req.body;
+    // Update user status
+    const user = connectedUsers.find(u => u.id === socketId);
+    if (user) {
+        user.status = status;
+        res.json({ status: 'updated' });
+    } else {
+        res.status(404).send('User not found');
     }
 });
 
