@@ -8,12 +8,14 @@ const cors = require('cors'); // Import cors middleware
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
-
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    },
+    reconnectionAttempts: 3, // Limit the number of reconnection attempts
+    reconnectionDelay: 1000, // Initial delay before attempting to reconnect (in milliseconds)
+    reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
+  });
 // Use cors 
 app.use(cors());
 
