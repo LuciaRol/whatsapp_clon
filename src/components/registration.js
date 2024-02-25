@@ -26,6 +26,17 @@ const Registration = ({ onRegister }) => {
         setStatus(e.target.value);
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setProfilePicture(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleRegistration();
@@ -50,29 +61,30 @@ const Registration = ({ onRegister }) => {
                         value={gatoFeliz}
                         onChange={() => handlePictureChange(gatoFeliz)}
                     />
-                    
                     <img src={gatoFeliz} alt="Gato Feliz" style={{ maxWidth: '100px' }} />
-                </label>
-                <label>
                     <input
                         type="radio"
                         name="profilePicture"
                         value={gatoGrunon}
                         onChange={() => handlePictureChange(gatoGrunon)}
                     />
-                   
                     <img src={gatoGrunon} alt="Gato Grunon" style={{ maxWidth: '100px' }} />
-                </label>
-                <label>
                     <input
                         type="radio"
                         name="profilePicture"
                         value={gato}
                         onChange={() => handlePictureChange(gato)}
                     />
-                   
                     <img src={gato} alt="Gato" style={{ maxWidth: '100px' }} />
                 </label>
+                {/* Other profile picture options */}
+            </div>
+            <div>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
             </div>
             <div>
                 <label>
