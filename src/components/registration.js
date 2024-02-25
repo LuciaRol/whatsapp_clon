@@ -44,22 +44,17 @@ const Registration = ({ onRegister }) => {
     };
 
     return (
-        <>
-        <div className='registro-container'>
-            <h2>Regístrate</h2>
+        <div>
+            <h2>Register Your Username</h2>
+            <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Enter your username"
+            />
             <div>
-                <label>Escoge un apodo:</label>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Enter your username"
-                />
-            </div>
-            <div>
-                <label>Escoge un avatar:</label>
-                <div className='registro-container-option'>
+                <label>
                     <input
                         type="radio"
                         name="profilePicture"
@@ -67,8 +62,6 @@ const Registration = ({ onRegister }) => {
                         onChange={() => handlePictureChange(gatoFeliz)}
                     />
                     <img src={gatoFeliz} alt="Gato Feliz" style={{ maxWidth: '100px' }} />
-                </div>
-                <div className='registro-container-option'>
                     <input
                         type="radio"
                         name="profilePicture"
@@ -76,22 +69,17 @@ const Registration = ({ onRegister }) => {
                         onChange={() => handlePictureChange(gatoGrunon)}
                     />
                     <img src={gatoGrunon} alt="Gato Grunon" style={{ maxWidth: '100px' }} />
-                </div>
-                <div className='registro-container-option'>
                     <input
                         type="radio"
                         name="profilePicture"
                         value={gato}
                         onChange={() => handlePictureChange(gato)}
                     />
-                    <img src={gato} alt="Gato cuqui" style={{ maxWidth: '100px' }} />
-                </div>
-            </div>
-            {/* Other profile picture options */}
-            <div>
-                <label>
-                    O sube un avatar propio:
+                    <img src={gato} alt="Gato" style={{ maxWidth: '100px' }} />
                 </label>
+                {/* Other profile picture options */}
+            </div>
+            <div>
                 <input
                     type="file"
                     accept="image/*"
@@ -100,19 +88,18 @@ const Registration = ({ onRegister }) => {
             </div>
             <div>
                 <label>
-                    Escoge un estado:
+                    Select Status:
+                    <select value={status} onChange={handleStatusChange}>
+                        <option value="">Select status</option>
+                        <option value="Happy">Happy</option>
+                        <option value="Grumpy">Grumpy</option>
+                        <option value="Neutral">Neutral</option>
+                    </select>
                 </label>
-                <select value={status} onChange={handleStatusChange}>
-                    <option value="Happy">Contento</option>
-                    <option value="Grumpy">Gruñón</option>
-                    <option value="Neutral">Normal</option>
-                </select>
             </div>
-            <button onClick={handleRegistration}>Entra a Chat-ON!</button>
+            <button onClick={handleRegistration}>Register</button>
         </div>
-        </>
     );
 };
-
 
 export default Registration;

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Registration from './components/registration';
 import PrincipalPage from './components/PrincipalPage';
 import Chat from './components/Chat';
-import './App.css';
 
 const App = () => {
     const [username, setUsername] = useState('');
@@ -17,14 +16,12 @@ const App = () => {
     };
 
     return (
-        <div  className="app" style={{ display: 'flex' }}> {/* Parent container with flex display */}
+        <div style={{ display: 'flex' }}> {/* Parent container with flex display */}
             <div style={{ flex: '1', marginRight: '10px' }}> {/* Left side */}
                 {!registrationCompleted ? (
-                    <div className="container1"><Registration onRegister={handleRegister} /></div>
-                    
+                    <Registration onRegister={handleRegister} />
                 ) : (
-                    <div className="container2">
-                        <PrincipalPage username={username} profilePicture={profilePicture} /></div>
+                    <PrincipalPage username={username} profilePicture={profilePicture} />
                 )}
             </div>
             <div style={{ flex: '1', marginLeft: '10px' }}> {/* Right side */}
