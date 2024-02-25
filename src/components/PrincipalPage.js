@@ -6,17 +6,28 @@ const PrincipalPage = () => {
     const socket = io('http://localhost:4000'); // Change the URL if your server is hosted elsewhere
 
     useEffect(() => {
-        // Listen for connected users update from the server
-        socket.on('connectedUsersUpdate', (users) => { // Change 'users' to 'connectedUsers'
-            setConnectedUsers(users);
-            console.log("Connected Users:", users); // Log connectedUsers array to console
-        });
+        // Fetch initial list of connected users when component mounts
+        fetchConnectedUsers();
 
-        // Clean up the connection on unmount
-        return () => {
-            socket.disconnect();
-        };
-    }, [socket]);
+        // Set up interval to fetch connected users every 5 seconds
+        const interval = setInterval(fetchConnectedUsers, 10000);
+
+        // Clean up interval on component unmount
+        return () => clearInterval(interval);
+    }, []);
+
+    const fetchConnectedUsers = () => {
+        // Send a request to the server to get the list of connected users
+        fetch('http://localhost:4000/connectedUsers')
+            .then(response => response.json())
+            .then(users => {
+                setConnectedUsers(users);
+                console.log("Connected Users:", users);
+            })
+            .catch(error => {
+                console.error('Error fetching connected users:', error);
+            });
+    };
 
     return (
         <div>

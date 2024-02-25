@@ -3,6 +3,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+const cors = require('cors'); // Import cors middleware
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +13,9 @@ const io = socketIo(server, {
     methods: ["GET", "POST"]
   }
 });
+
+// Use cors 
+app.use(cors());
 
 // Define an array to store connected users' information
 const connectedUsers = [];
@@ -26,7 +30,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    /// Handling user registration
+    // Handling user registration
     socket.on('register', ({ username, profilePicture, status }) => {
         console.log('Received registration data:', username, profilePicture, status);
         
@@ -114,6 +118,11 @@ app.post('/updateStatus', (req, res) => {
     } else {
         res.status(404).send('User not found');
     }
+});
+
+// Handle request for connected users
+app.get('/connectedUsers', (req, res) => {
+    res.json(connectedUsers.map(user => user.username));
 });
 
 // Start the server
