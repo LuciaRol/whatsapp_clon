@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,93 @@
   to {
     transform: rotate(360deg);
   }
+} */
+/* ------------------------------------------------------ */
+/* ESTILOS PROPIOS */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+.app{
+  background-color: #fcf5eb;
+  height: 100vh;
+}
+.container1{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  
+}
+
+
+/* RESGISTRO (LANDING) */
+
+.registro-container {
+  max-width: 400px;
+  margin: 0px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.registro-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.registro-container label {
+  font-weight: bold;
+}
+
+.registro-container input[type="text"],
+.registro-container input[type="file"],
+.registro-container select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.registro-container input[type="file"] {
+  cursor: pointer;
+}
+
+.registro-container input[type="radio"] {
+  margin-right: 5px;
+}
+
+.registro-container img {
+  margin-right: 10px;
+  width: 50px; /* Hacer que todas las imágenes ocupen el 100% del ancho del contenedor */
+  height: 50px; /* Establecer una altura fija para todas las imágenes */
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.registro-container button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #128C7E;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.registro-container button:hover {
+  background-color: #075E54;
+}
+
+.registro-container button:active {
+  background-color: #128C7E;
+}
+
