@@ -3,6 +3,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+const { spawn } = require('child_process'); // Import spawn from child_process module
 const cors = require('cors'); // Import cors middleware
 
 const app = express();
@@ -15,7 +16,7 @@ const io = socketIo(server, {
     reconnectionAttempts: 3, // Limit the number of reconnection attempts
     reconnectionDelay: 1000, // Initial delay before attempting to reconnect (in milliseconds)
     reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
-  });
+});
 // Use cors 
 app.use(cors());
 
@@ -131,4 +132,12 @@ app.get('/connectedUsers', (req, res) => {
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+
+    // Automatically start the React development server
+    const reactServer = spawn('npm', ['start'], { stdio: 'inherit', shell: true });
+
+    reactServer.on('close', (code) => {
+        console.log(`React server exited with code ${code}`);
+        // You can handle server close event here if needed
+    });
 });
