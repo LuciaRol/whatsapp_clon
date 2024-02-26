@@ -44,17 +44,22 @@ const Registration = ({ onRegister }) => {
     };
 
     return (
-        <div>
-            <h2>Register Your Username</h2>
-            <input
+        <div className='registro-container'>
+            <h2>Registra tu usuario</h2>
+            <div>
+                <label>Escoge un apodo:</label>
+                <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter your username"
             />
+            </div>
+            {/* fotos predeterminadas */}
             <div>
-                <label>
+                <label>Escoge un avatar:</label>
+                <div>
                     <input
                         type="radio"
                         name="profilePicture"
@@ -62,6 +67,9 @@ const Registration = ({ onRegister }) => {
                         onChange={() => handlePictureChange(gatoFeliz)}
                     />
                     <img src={gatoFeliz} alt="Gato Feliz" style={{ maxWidth: '100px' }} />
+                </div> 
+
+                <div>
                     <input
                         type="radio"
                         name="profilePicture"
@@ -69,6 +77,9 @@ const Registration = ({ onRegister }) => {
                         onChange={() => handlePictureChange(gatoGrunon)}
                     />
                     <img src={gatoGrunon} alt="Gato Grunon" style={{ maxWidth: '100px' }} />
+                </div>
+
+                <div>
                     <input
                         type="radio"
                         name="profilePicture"
@@ -76,28 +87,30 @@ const Registration = ({ onRegister }) => {
                         onChange={() => handlePictureChange(gato)}
                     />
                     <img src={gato} alt="Gato" style={{ maxWidth: '100px' }} />
-                </label>
-                {/* Other profile picture options */}
+                </div>
             </div>
+
+            {/* sbubir foto propia como avatar */}
             <div>
+                <label>O sube un avatar propio:</label>
                 <input
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                 />
             </div>
+
+            {/* elegir estado */}
             <div>
-                <label>
-                    Select Status:
-                    <select value={status} onChange={handleStatusChange}>
-                        <option value="">Select status</option>
-                        <option value="Happy">Happy</option>
-                        <option value="Grumpy">Grumpy</option>
-                        <option value="Neutral">Neutral</option>
-                    </select>
-                </label>
+                <label>Elige estado:</label>
+                <select value={status} onChange={handleStatusChange}>
+                    <option value="Happy">Happy</option>
+                    <option value="Grumpy">Grumpy</option>
+                    <option value="Neutral">Neutral</option>
+                </select>
+                
             </div>
-            <button onClick={handleRegistration}>Register</button>
+            <button onClick={handleRegistration}>Entra ya a Chatt-ON!</button>
         </div>
     );
 };
