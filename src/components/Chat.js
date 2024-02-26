@@ -76,17 +76,16 @@ const Chat = ({ username, profilePicture }) => {
     ];
 
     return (
-        <div>
-            <div>
+        <div className="chat-container">
+            <div className="chat-messages">
                 {messages.map((message, index) => (
-                    <div key={index}>
-                        {message.profilePicture && <img src={message.profilePicture} alt="Profile" style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }} />}
-                        {message.sender === username ? `${username}: ` : `${message.sender}: `}
-                        <span dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(message.text) }} />
+                    <div className="message" key={index}>
+                        {message.profilePicture && <img src={message.profilePicture} alt="Profile" />}
+                        <span className="message-text">{message.sender === username ? `${username}: ` : `${message.sender}: `}<span dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(message.text) }} /></span>
                     </div>
                 ))}
             </div>
-            <div>
+            <div className="input-container">
                 <input
                     type="text"
                     value={input}
@@ -98,17 +97,17 @@ const Chat = ({ username, profilePicture }) => {
                 />
                 <button onClick={sendMessage}>Send</button>
             </div>
-            <div>
+            <div className="emoji-container">
                 <button onClick={() => setShowEmojis(!showEmojis)}>Emoji</button>
+                {showEmojis && (
+                    <div>
+                        {emojis.map((emoji, index) => (
+                            <span className="emoji" key={index} onClick={() => sendEmoji(emoji)} dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(emoji) }} />
+                        ))}
+                    </div>
+                )}
             </div>
-            {showEmojis && (
-                <div>
-                    {emojis.map((emoji, index) => (
-                        <span key={index} onClick={() => sendEmoji(emoji)} style={{ cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(emoji) }} />
-                    ))}
-                </div>
-            )}
-            {isTyping && <div>{typingUser} está escribiendo...</div>}
+            {isTyping && <div className="typing-indicator">{typingUser} está escribiendo...</div>}
         </div>
     );
 };
