@@ -44,6 +44,7 @@ const Registration = ({ onRegister }) => {
     };
 
     return (
+        <>
         <div className='registro-container'>
             <h2>Registra tu usuario</h2>
             <div>
@@ -104,6 +105,7 @@ const Registration = ({ onRegister }) => {
             <div>
                 <label>Elige estado:</label>
                 <select value={status} onChange={handleStatusChange}>
+                    <option value="Happy">Elige tu mood</option>
                     <option value="Happy">Happy</option>
                     <option value="Grumpy">Grumpy</option>
                     <option value="Neutral">Neutral</option>
@@ -112,6 +114,7 @@ const Registration = ({ onRegister }) => {
             </div>
             <button onClick={handleRegistration}>Entra ya a Chatt-ON!</button>
         </div>
+        </>
     );
 };
 

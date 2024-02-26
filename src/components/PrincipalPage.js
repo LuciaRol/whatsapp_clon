@@ -30,14 +30,19 @@ const PrincipalPage = () => {
     };
 
     return (
-        <div>
-            <h2>Connected Users</h2>
-            <ul>
-                {connectedUsers.map((user, index) => (
-                    <li key={index}>{user}</li>
-                ))}
-            </ul>
+        <>
+        <div className='principal-container'>
+            <h2>Usuarios conectados:</h2>
+            <div>
+                <ul className='principal-container-lista'>
+                    {connectedUsers.map((user, index) => (
+                        <li className="principal-container-item" key={index}>{user}</li>
+                    ))}
+                </ul>
+            </div>
+            
         </div>
+        </>
     );
 };
 
