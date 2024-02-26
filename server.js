@@ -59,6 +59,11 @@ io.on('connection', (socket) => {
         // Broadcast the message to all connected clients
         socket.broadcast.emit('message', data);
     });
+
+    socket.on('typing', (username) => {
+        // Emitir mensaje de que el usuario está escribiendo a todos los clientes excepto al que está escribiendo
+        socket.broadcast.emit('typing', username);
+    });
     
 
     // Handling disconnection

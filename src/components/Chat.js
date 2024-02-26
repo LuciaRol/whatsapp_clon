@@ -5,36 +5,43 @@ import * as emojione from 'emojione';
 const Chat = ({ username, profilePicture }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const [showEmojis, setShowEmojis] = useState(false); // Estado para controlar la visibilidad de la matriz de emojis
-    const socket = io('http://localhost:4000'); // Cambia la URL si tu servidor está alojado en otro lugar
+    const [showEmojis, setShowEmojis] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingUser, setTypingUser] = useState('');
+    const socket = io('http://localhost:4000');
 
     useEffect(() => {
-        // Escucha los mensajes entrantes
         socket.on('message', (message) => {
             setMessages(prevMessages => [...prevMessages, message]);
         });
 
-        // Limpia la conexión al desmontar
+        socket.on('typing', (user) => {
+            setIsTyping(true);
+            setTypingUser(user);
+            setTimeout(() => {
+                setIsTyping(false);
+                setTypingUser('');
+            }, 2000);
+        });
+
         return () => {
             socket.disconnect();
         };
     }, [socket]);
 
-    // Función para enviar un mensaje
     const sendMessage = () => {
         if (input.trim() !== '') {
             const newMessage = {
                 text: input,
                 sender: username,
-                profilePicture: profilePicture // Incluye profilePicture en el objeto de mensaje
+                profilePicture: profilePicture
             };
             socket.emit('message', newMessage);
-            setMessages(prevMessages => [...prevMessages, newMessage]); // Muestra el mensaje enviado localmente
+            setMessages(prevMessages => [...prevMessages, newMessage]);
             setInput('');
         }
     };
 
-    // Función para enviar un emoji
     const sendEmoji = (emoji) => {
         const newMessage = {
             text: emoji,
@@ -42,7 +49,11 @@ const Chat = ({ username, profilePicture }) => {
             profilePicture: profilePicture
         };
         socket.emit('message', newMessage);
-        setMessages(prevMessages => [...prevMessages, newMessage]); // Muestra el emoji enviado localmente
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+    };
+
+    const notifyTyping = () => {
+        socket.emit('typing', username);
     };
 
     const handleKeyPress = (e) => {
@@ -51,7 +62,6 @@ const Chat = ({ username, profilePicture }) => {
         }
     };
 
-    // Matriz de diez emojis
     const emojis = [
         ':smile:',
         ':heart:',
@@ -63,37 +73,34 @@ const Chat = ({ username, profilePicture }) => {
         ':pizza:',
         ':sun_with_face:',
         ':camera:'
-        // Agrega más emojis según sea necesario
     ];
 
     return (
         <div>
-            {/* Muestra los mensajes */}
             <div>
                 {messages.map((message, index) => (
                     <div key={index}>
-                        {message.profilePicture && <img src={message.profilePicture} alt="Profile" style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }} />} {/* Muestra la imagen de perfil si está disponible */}
+                        {message.profilePicture && <img src={message.profilePicture} alt="Profile" style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }} />}
                         {message.sender === username ? `${username}: ` : `${message.sender}: `}
                         <span dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(message.text) }} />
                     </div>
                 ))}
             </div>
-            {/* Campo de entrada y botón de enviar */}
             <div>
                 <input
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e) => {
+                        setInput(e.target.value);
+                        notifyTyping();
+                    }}
                     onKeyPress={handleKeyPress}
                 />
                 <button onClick={sendMessage}>Send</button>
             </div>
-            
-            {/* Botón para mostrar la matriz de emojis */}
             <div>
                 <button onClick={() => setShowEmojis(!showEmojis)}>Emoji</button>
             </div>
-            {/* Mostrar matriz de emojis si showEmojis es verdadero */}
             {showEmojis && (
                 <div>
                     {emojis.map((emoji, index) => (
@@ -101,6 +108,7 @@ const Chat = ({ username, profilePicture }) => {
                     ))}
                 </div>
             )}
+            {isTyping && <div>{typingUser} está escribiendo...</div>}
         </div>
     );
 };
