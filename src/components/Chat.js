@@ -5,6 +5,7 @@ import * as emojione from 'emojione';
 const Chat = ({ username, profilePicture }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+    const [showEmojis, setShowEmojis] = useState(false); // Estado para controlar la visibilidad de la matriz de emojis
     const socket = io('http://localhost:4000'); // Cambia la URL si tu servidor está alojado en otro lugar
 
     useEffect(() => {
@@ -87,12 +88,19 @@ const Chat = ({ username, profilePicture }) => {
                 />
                 <button onClick={sendMessage}>Send</button>
             </div>
-            {/* Mostrar matriz de emojis */}
+            
+            {/* Botón para mostrar la matriz de emojis */}
             <div>
-                {emojis.map((emoji, index) => (
-                    <span key={index} onClick={() => sendEmoji(emoji)} style={{ cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(emoji) }} />
-                ))}
+                <button onClick={() => setShowEmojis(!showEmojis)}>Emoji</button>
             </div>
+            {/* Mostrar matriz de emojis si showEmojis es verdadero */}
+            {showEmojis && (
+                <div>
+                    {emojis.map((emoji, index) => (
+                        <span key={index} onClick={() => sendEmoji(emoji)} style={{ cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(emoji) }} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
