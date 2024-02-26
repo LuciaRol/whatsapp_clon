@@ -17,6 +17,7 @@ const io = socketIo(server, {
     reconnectionDelay: 1000, // Initial delay before attempting to reconnect (in milliseconds)
     reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
 });
+
 // Use cors 
 app.use(cors());
 
@@ -32,31 +33,35 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Socket.io event handling
 io.on('connection', (socket) => {
     console.log('New client connected');
+    
+    // Increment connected user count and log
+    console.log('Usuarios conectados:', connectedUsers.length + 1);
 
     // Handling user registration
     socket.on('register', ({ username, profilePicture, status }) => {
         console.log('Received registration data:', username, profilePicture, status);
-        
+
         // Save user information
         connectedUsers.push({ id: socket.id, username, profilePicture, status });
         console.log('User registered:', username);
         console.log('Connected users:', connectedUsers);
-        
+
         // Emit updated list of connected users to all clients
         io.emit('connectedUsersUpdate', connectedUsers.map(user => user.username));
-        
+
         // Emit socket ID back to client for future reference
         socket.emit('registrationSuccess', socket.id);
     });
 
-    // Handling incoming messages
-    socket.on('message', (data) => {
+     // Handling incoming messages
+     socket.on('message', (data) => {
         console.log('Message received:', data);
         // Broadcast the message to all connected clients
         io.emit('message', data);
     });
+    
 
-   // Handling disconnection
+    // Handling disconnection
     socket.on('disconnect', () => {
         console.log('Client disconnected');
         // Remove the disconnected user from the array
@@ -66,6 +71,8 @@ io.on('connection', (socket) => {
             // Emit updated list of connected users to all clients
             io.emit('connectedUsersUpdate', connectedUsers.map(user => user.username));
         }
+        // Decrement connected user count and log
+        console.log('Total connected users:', connectedUsers.length);
     });
 
     // Handle user status update
@@ -76,6 +83,8 @@ io.on('connection', (socket) => {
             console.log('User status updated:', status);
         }
     });
+
+    
 });
 
 // Handle user registration endpoint
