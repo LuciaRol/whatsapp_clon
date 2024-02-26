@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
      socket.on('message', (data) => {
         console.log('Message received:', data);
         // Broadcast the message to all connected clients
-        io.emit('message', data);
+        socket.broadcast.emit('message', data);
     });
     
 
@@ -83,6 +83,21 @@ io.on('connection', (socket) => {
             console.log('User status updated:', status);
         }
     });
+
+    // rooms: agrupa los sockets
+  socket.on('entrarChat', (chat)=>{
+    socket.join(chat);
+    io.to(chat).emit('connectToRoom', 'Bienvenido a la sala');
+  });
+
+  socket.on('mensajeEnSala', (datos)=>{
+    datos = {
+      sala: "nombreSala",
+      nick: "miNick",
+      msg: "mensaje"
+    }
+    socket.to(datos.sala).emit("mensajeEnSala", datos)
+  });
 
     
 });
