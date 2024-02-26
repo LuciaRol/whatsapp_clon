@@ -1,35 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import * as emojione from 'emojione';
 
 const Chat = ({ username, profilePicture }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const socket = io('http://localhost:4000'); // Change the URL if your server is hosted elsewhere
+    const socket = io('http://localhost:4000'); // Cambia la URL si tu servidor está alojado en otro lugar
 
     useEffect(() => {
-        // Listen for incoming messages
+        // Escucha los mensajes entrantes
         socket.on('message', (message) => {
             setMessages(prevMessages => [...prevMessages, message]);
         });
 
-        // Clean up the connection on unmount
+        // Limpia la conexión al desmontar
         return () => {
             socket.disconnect();
         };
     }, [socket]);
 
-    // Function to send a message
+    // Función para enviar un mensaje
     const sendMessage = () => {
         if (input.trim() !== '') {
             const newMessage = {
                 text: input,
                 sender: username,
-                profilePicture: profilePicture // Include profilePicture in the message object
+                profilePicture: profilePicture // Incluye profilePicture en el objeto de mensaje
             };
             socket.emit('message', newMessage);
-            setMessages(prevMessages => [...prevMessages, newMessage]); // Display sent message locally
+            setMessages(prevMessages => [...prevMessages, newMessage]); // Muestra el mensaje enviado localmente
             setInput('');
         }
+    };
+
+    // Función para enviar un emoji
+    const sendEmoji = (emoji) => {
+        const newMessage = {
+            text: emoji,
+            sender: username,
+            profilePicture: profilePicture
+        };
+        socket.emit('message', newMessage);
+        setMessages(prevMessages => [...prevMessages, newMessage]); // Muestra el emoji enviado localmente
     };
 
     const handleKeyPress = (e) => {
@@ -38,25 +50,49 @@ const Chat = ({ username, profilePicture }) => {
         }
     };
 
+    // Matriz de diez emojis
+    const emojis = [
+        ':smile:',
+        ':heart:',
+        ':thumbsup:',
+        ':joy:',
+        ':rocket:',
+        ':fire:',
+        ':star:',
+        ':pizza:',
+        ':sun_with_face:',
+        ':camera:'
+        // Agrega más emojis según sea necesario
+    ];
+
     return (
         <div>
-            {/* Display messages */}
+            {/* Muestra los mensajes */}
             <div>
                 {messages.map((message, index) => (
                     <div key={index}>
-                        {message.profilePicture && <img src={message.profilePicture} alt="Profile" style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }} />} {/* Display profile picture if available */}
-                        {message.sender === username ? `${username}: ` : `${message.sender}: `}{message.text}
+                        {message.profilePicture && <img src={message.profilePicture} alt="Profile" style={{ width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }} />} {/* Muestra la imagen de perfil si está disponible */}
+                        {message.sender === username ? `${username}: ` : `${message.sender}: `}
+                        <span dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(message.text) }} />
                     </div>
                 ))}
             </div>
-            {/* Input field and send button */}
-            <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-            />
-            <button onClick={sendMessage}>Send</button>
+            {/* Campo de entrada y botón de enviar */}
+            <div>
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                />
+                <button onClick={sendMessage}>Send</button>
+            </div>
+            {/* Mostrar matriz de emojis */}
+            <div>
+                {emojis.map((emoji, index) => (
+                    <span key={index} onClick={() => sendEmoji(emoji)} style={{ cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(emoji) }} />
+                ))}
+            </div>
         </div>
     );
 };
