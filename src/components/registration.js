@@ -103,9 +103,9 @@ const Registration = ({ onRegister }) => {
 
             {/* elegir estado */}
             <div>
-                <label>Elige estado:</label>
+                <label>Estado:</label>
                 <select value={status} onChange={handleStatusChange}>
-                    <option value="Happy">Elige tu mood</option>
+                    <option value="Mood" selected>Elige tu mood</option>
                     <option value="Happy">Happy</option>
                     <option value="Grumpy">Grumpy</option>
                     <option value="Neutral">Neutral</option>

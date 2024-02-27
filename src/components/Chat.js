@@ -8,7 +8,7 @@ const Chat = ({ username, profilePicture }) => {
     const [showEmojis, setShowEmojis] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [typingUser, setTypingUser] = useState('');
-    const [currentRoom, setCurrentRoom] = useState('general'); // Default chat room
+    const [currentRoom, setCurrentRoom] = useState('General'); // Default chat room
     const socket = io('http://localhost:4000');
 
     useEffect(() => {
@@ -78,6 +78,15 @@ const Chat = ({ username, profilePicture }) => {
         ':camera:'
     ];
 
+    // Object to map each room to a background color
+    const roomColors = {
+        'General': '#f0f0f0',
+        'Memes de gatos': '#e0f7fa',
+        'Juegos de mesa': '#e8eaf6',
+        'Cómics': '#f8bbd0',
+        'Programación': '#dcedc8'
+    };
+
     // Function to switch chat rooms
     const changeRoom = (room) => {
         setCurrentRoom(room);
@@ -88,13 +97,11 @@ const Chat = ({ username, profilePicture }) => {
         <div className="chat-container">
             <div className="room-selector">
                 <label>Canales disponibles: </label>
-                <button className="btn-chat" onClick={() => changeRoom('General')}>General</button>
-                <button className="btn-chat" onClick={() => changeRoom('Memes')}>Memes de gatos</button>
-                <button className="btn-chat" onClick={() => changeRoom('Juegos')}>Juegos de mesa</button>
-                <button className="btn-chat" onClick={() => changeRoom('Comics')}>Cómics</button>
-                <button className="btn-chat" onClick={() => changeRoom('Programacion')}>Programación</button>
+                {Object.keys(roomColors).map(room => (
+                    <button key={room} className="btn-chat" onClick={() => changeRoom(room)}>{room}</button>
+                ))}
             </div>
-            <div className="chat-messages">
+            <div className="chat-messages" style={{ backgroundColor: roomColors[currentRoom] }}>
                 {messages.filter(message => message.room === currentRoom).map((message, index) => (
                     <div className="message" key={index}>
                         {message.profilePicture && <img src={message.profilePicture} alt="Profile" />}
