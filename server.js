@@ -41,8 +41,8 @@ io.on('connection', (socket) => {
     socket.on('register', ({ username, profilePicture, status }) => {
         console.log('Received registration data:', username, profilePicture, status);
 
-        // Save user information
-        connectedUsers.push({ id: socket.id, username, profilePicture, status });
+        // Save user information // se ha añadido el nick: para que sea un json valido
+        connectedUsers.push({ id: socket.id, nick: username, profilePicture, status });
         console.log('User registered:', username);
         console.log('Connected users:', connectedUsers);
 
