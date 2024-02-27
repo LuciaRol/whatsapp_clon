@@ -209,13 +209,17 @@
   margin-right: 10px;
 }
 
-.input-container button {
+.input-container button, .btn-chat {
   padding: 8px 16px;
   background-color: #128C7E;
   color: #fff;
   border: none;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.btn-chat{
+  height: 40PX;
 }
 
 .emoji-container {

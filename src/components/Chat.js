@@ -98,7 +98,7 @@ const Chat = ({ username, profilePicture }) => {
                 <button onClick={sendMessage}>Send</button>
             </div>
             <div className="emoji-container">
-                <button onClick={() => setShowEmojis(!showEmojis)}>Emoji</button>
+                <button className="btn-chat" onClick={() => setShowEmojis(!showEmojis)}>Emoji</button>
                 {showEmojis && (
                     <div>
                         {emojis.map((emoji, index) => (
