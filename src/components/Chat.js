@@ -8,6 +8,7 @@ const Chat = ({ username, profilePicture }) => {
     const [showEmojis, setShowEmojis] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [typingUser, setTypingUser] = useState('');
+    const [currentRoom, setCurrentRoom] = useState('general'); // Default chat room
     const socket = io('http://localhost:4000');
 
     useEffect(() => {
@@ -27,14 +28,15 @@ const Chat = ({ username, profilePicture }) => {
         return () => {
             socket.disconnect();
         };
-    }, [socket]);
+    }, [socket, currentRoom]);
 
     const sendMessage = () => {
         if (input.trim() !== '') {
             const newMessage = {
                 text: input,
                 sender: username,
-                profilePicture: profilePicture
+                profilePicture: profilePicture,
+                room: currentRoom
             };
             socket.emit('message', newMessage);
             setMessages(prevMessages => [...prevMessages, newMessage]);
@@ -46,7 +48,8 @@ const Chat = ({ username, profilePicture }) => {
         const newMessage = {
             text: emoji,
             sender: username,
-            profilePicture: profilePicture
+            profilePicture: profilePicture,
+            room: currentRoom
         };
         socket.emit('message', newMessage);
         setMessages(prevMessages => [...prevMessages, newMessage]);
@@ -75,10 +78,24 @@ const Chat = ({ username, profilePicture }) => {
         ':camera:'
     ];
 
+    // Function to switch chat rooms
+    const changeRoom = (room) => {
+        setCurrentRoom(room);
+        setMessages([]); // Clear messages when switching rooms
+    };
+
     return (
         <div className="chat-container">
+            <div className="room-selector">
+                <label>Canales disponibles: </label>
+                <button className="btn-chat" onClick={() => changeRoom('General')}>General</button>
+                <button className="btn-chat" onClick={() => changeRoom('Memes')}>Memes de gatos</button>
+                <button className="btn-chat" onClick={() => changeRoom('Juegos')}>Juegos de mesa</button>
+                <button className="btn-chat" onClick={() => changeRoom('Comics')}>Cómics</button>
+                <button className="btn-chat" onClick={() => changeRoom('Programacion')}>Programación</button>
+            </div>
             <div className="chat-messages">
-                {messages.map((message, index) => (
+                {messages.filter(message => message.room === currentRoom).map((message, index) => (
                     <div className="message" key={index}>
                         {message.profilePicture && <img src={message.profilePicture} alt="Profile" />}
                         <span className="message-text">{message.sender === username ? `${username}: ` : `${message.sender}: `}<span dangerouslySetInnerHTML={{ __html: emojione.shortnameToImage(message.text) }} /></span>
@@ -95,7 +112,7 @@ const Chat = ({ username, profilePicture }) => {
                     }}
                     onKeyPress={handleKeyPress}
                 />
-                <button onClick={sendMessage}>Send</button>
+                <button onClick={sendMessage}>Enviar</button>
             </div>
             <div className="emoji-container">
                 <button className="btn-chat" onClick={() => setShowEmojis(!showEmojis)}>Emoji</button>
@@ -108,6 +125,7 @@ const Chat = ({ username, profilePicture }) => {
                 )}
             </div>
             {isTyping && <div className="typing-indicator">{typingUser} está escribiendo...</div>}
+            <div className="room-info">Estás en la sala {currentRoom}</div>
         </div>
     );
 };

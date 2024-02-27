@@ -3,3 +3,5 @@ heroku
 --------------------------------------------
 RENDER
 New -> Web service
+
+render_external_url
