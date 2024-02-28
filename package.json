@@ -9,6 +9,7 @@
     "cors": "^2.8.5",
     "emojione": "^4.5.0",
     "express-fileupload": "^1.4.3",
+    "firebase": "^10.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

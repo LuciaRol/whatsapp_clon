@@ -3,12 +3,20 @@ import io from 'socket.io-client';
 import gatoFeliz from '../img/gato-feliz.jpg';
 import gatoGrunon from '../img/gato-grunon.jpg';
 import gato from '../img/gato.jpg';
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
+import app from './firebaseconfig';
+
+
 
 const Registration = ({ onRegister }) => {
     const [username, setUsername] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [status, setStatus] = useState('');
     const socket = io('http://localhost:4000');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [error, setError] = useState(null);
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    
 
     const handleRegistration = () => {
         if (username.trim() !== '' && profilePicture && status) {
@@ -25,6 +33,61 @@ const Registration = ({ onRegister }) => {
     const handleStatusChange = (e) => {
         setStatus(e.target.value);
     };
+
+    const handleRegisterWithGoogle = async () => {
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            
+            // Extract user's name and picture from Google authentication result
+            const { displayName, photoURL } = user;
+    
+            // Set username to Google's name
+            setUsername(displayName);
+    
+            // Set profile picture to Google's picture
+            setProfilePicture(photoURL);
+    
+            // Set status to "Happy"
+            setStatus("Happy");
+    
+            // Automatically handle registration
+            handleRegistration();
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    
+const handleRegisterWithFacebook = async () => {
+    const auth = getAuth(app);
+    const provider = new FacebookAuthProvider();
+    
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Extract user's name and picture from Facebook authentication result
+        const { displayName, photoURL } = user;
+
+        // Set username to Facebook's name
+        setUsername(displayName);
+
+        // Set profile picture to Facebook's picture
+        setProfilePicture(photoURL);
+
+        // Set status to "Happy"
+        setStatus("Happy");
+
+        // Automatically handle registration
+        handleRegistration();
+    } catch (error) {
+        setError(error.message);
+    }
+};
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -112,7 +175,12 @@ const Registration = ({ onRegister }) => {
                 </select>
                 
             </div>
+            
+            {/* Google Sign-In Button */}
+            <button onClick={handleRegisterWithGoogle}>Regístrate con Google</button>
+            <button onClick={handleRegisterWithFacebook}>Regístrate con Facebook</button>
             <button onClick={handleRegistration}>Entra ya a Chatt-ON!</button>
+          
         </div>
         </>
     );
