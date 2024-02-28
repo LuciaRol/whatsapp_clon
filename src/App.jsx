@@ -17,20 +17,22 @@ const App = () => {
     };
 
     return (
-        <div  className="app" style={{ display: 'flex' }}> {/* Parent container with flex display */}
+        
+        <div className="app" style={{ display: 'flex' }}> {/* Parent container with flex display */}
             <div style={{ flex: '1', marginRight: '10px' }}> {/* Left side */}
                 {!registrationCompleted ? (
                     <div className="container1"><Registration onRegister={handleRegister} /></div>
                 ) : (
-                    <div className="container2">
-                        <PrincipalPage username={username} profilePicture={profilePicture} /></div>
+                    <div className="container2"><PrincipalPage username={username} profilePicture={profilePicture} /></div>
                 )}
             </div>
-            <div style={{ flex: '1', marginLeft: '10px' }}> {/* Right side */}
+            <div style={{ flex: '2', marginLeft: '10px' }}> {/* Right side */}
+                {!registrationCompleted && <div className='image-container'><img src="https://i.pinimg.com/originals/74/34/57/743457785e7543fd62c51e59dcf853d9.gif" alt="Gatito" /></div>}
                 {registrationCompleted && <Chat username={username} profilePicture={profilePicture} />}
             </div>
         </div>
     );
+    
 };
 
 export default App;
