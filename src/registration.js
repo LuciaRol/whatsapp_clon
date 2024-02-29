@@ -12,7 +12,7 @@ const Registration = ({ onRegister }) => {
     const [username, setUsername] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [status, setStatus] = useState('');
-    const socket = io('https://chat-lucia-bb0ziakbl-lucias-projects-4febd059.vercel.app:4000');
+    const socket = io('chat-lucia.vercel.app:4000');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [error, setError] = useState(null);
     const [registrationSuccess, setRegistrationSuccess] = useState(false);

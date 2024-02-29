@@ -9,7 +9,7 @@ const Chat = ({ username, profilePicture }) => {
     const [isTyping, setIsTyping] = useState(false);
     const [typingUser, setTypingUser] = useState('');
     const [currentRoom, setCurrentRoom] = useState('General'); // Default chat room
-    const socket = io('https://chat-lucia-bb0ziakbl-lucias-projects-4febd059.vercel.app:4000');
+    const socket = io('chat-lucia.vercel.app:4000');
     
     useEffect(() => {
         socket.on('message', (message) => {

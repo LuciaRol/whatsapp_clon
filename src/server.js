@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-      origin: "https://chat-lucia-bb0ziakbl-lucias-projects-4febd059.vercel.app:3000",
+      origin: "chat-lucia.vercel.app:3000",
       methods: ["GET", "POST"]
     },
     reconnectionAttempts: 3, // Limit the number of reconnection attempts
@@ -121,7 +121,7 @@ app.post('/register', (req, res) => {
                 res.status(500).send('Error saving profile picture');
             } else {
                 // Send the URL of the uploaded image to the client along with the username
-                const imageUrl = `https://chat-lucia-bb0ziakbl-lucias-projects-4febd059.vercel.app:4000/uploads/${fileName}`;
+                const imageUrl = `chat-lucia.vercel.app:4000/uploads/${fileName}`;
                 // Send user registration data to the client
                 io.to(req.socketId).emit('registrationComplete', { username, profilePicture: imageUrl });
                 // Store user information on the server
