@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import io from 'socket.io-client';
-import gatoFeliz from './img/gato-feliz.jpg';
-import gatoGrunon from './img/gato-grunon.jpg';
-import gato from './img/gato.jpg';
+import gatoFeliz from '../img/gato-feliz.jpg';
+import gatoGrunon from '../img/gato-grunon.jpg';
+import gato from '../img/gato.jpg';
 import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
-import app from './firebaseconfig';
+import app from '../firebaseconfig';
 
 
 
@@ -12,7 +12,7 @@ const Registration = ({ onRegister }) => {
     const [username, setUsername] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [status, setStatus] = useState('');
-    const socket = io('chat-lucia.vercel.app:4000');
+    const socket = io(process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://whatsapp-clon-1.vercel.app');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [error, setError] = useState(null);
     const [registrationSuccess, setRegistrationSuccess] = useState(false);

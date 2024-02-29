@@ -8,15 +8,11 @@ const cors = require('cors'); // Import cors middleware
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-      origin: "chat-lucia.vercel.app:3000",
-      methods: ["GET", "POST"]
-    },
-    reconnectionAttempts: 3, // Limit the number of reconnection attempts
-    reconnectionDelay: 1000, // Initial delay before attempting to reconnect (in milliseconds)
-    reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
-});
+
+if (process.env.NODE_ENV !== 'production') {
+    const cors = require('cors');
+    app.use(cors({ origin: "http://localhost:3000" }));
+}
 
 // Use cors 
 app.use(cors());
@@ -29,6 +25,17 @@ app.use(fileUpload());
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+const io = socketIo(server, {
+    cors: process.env.NODE_ENV === 'production' ? undefined : {
+        origin: "http://localhost:3000"
+    },
+    reconnectionAttempts: 3, // Limit the number of reconnection attempts
+    reconnectionDelay: 1000, // Initial delay before attempting to reconnect (in milliseconds)
+    reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
+});
+
 
 // Socket.io event handling
 io.on('connection', (socket) => {
@@ -120,9 +127,9 @@ app.post('/register', (req, res) => {
                 console.error('Error saving profile picture:', err);
                 res.status(500).send('Error saving profile picture');
             } else {
+                // Construct the imageUrl dynamically using the baseUrl received from the client
+                const imageUrl = `${baseUrl}/uploads/${fileName}`;
                 // Send the URL of the uploaded image to the client along with the username
-                const imageUrl = `chat-lucia.vercel.app:4000/uploads/${fileName}`;
-                // Send user registration data to the client
                 io.to(req.socketId).emit('registrationComplete', { username, profilePicture: imageUrl });
                 // Store user information on the server
                 connectedUsers.push({ id: req.socketId, username, profilePicture: imageUrl, status: 'online' });
@@ -163,10 +170,10 @@ server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 
     // Automatically start the React development server
-    //const reactServer = spawn('npm', ['start'], { stdio: 'inherit', shell: true });
+    const reactServer = spawn('npm', ['start'], { stdio: 'inherit', shell: true });
 
-    //reactServer.on('close', (code) => {
-    //    console.log(`React server exited with code ${code}`);
+    reactServer.on('close', (code) => {
+        console.log(`React server exited with code ${code}`);
         // You can handle server close event here if needed
-    //});
+    });
 });

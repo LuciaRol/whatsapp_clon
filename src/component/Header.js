@@ -1,5 +1,5 @@
 import React from 'react';
-import gatoSurprise from './img/surprise.png';
+import gatoSurprise from '../img/surprise.png';
 
 function Header() {
     return (

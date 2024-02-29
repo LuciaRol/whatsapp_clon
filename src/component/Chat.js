@@ -9,8 +9,8 @@ const Chat = ({ username, profilePicture }) => {
     const [isTyping, setIsTyping] = useState(false);
     const [typingUser, setTypingUser] = useState('');
     const [currentRoom, setCurrentRoom] = useState('General'); // Default chat room
-    const socket = io('chat-lucia.vercel.app:4000');
-    
+    const socket = io(process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://whatsapp-clon-1.vercel.app');
+
     useEffect(() => {
         socket.on('message', (message) => {
             setMessages(prevMessages => [...prevMessages, message]);

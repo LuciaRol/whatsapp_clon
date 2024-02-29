@@ -3,8 +3,8 @@ import io from 'socket.io-client';
 
 const PrincipalPage = () => {
     const [connectedUsers, setConnectedUsers] = useState([]);
-    const socket = io('chat-lucia.vercel.app:4000'); 
-    
+    const socket = io();
+
     useEffect(() => {
         // Fetch initial list of connected users when component mounts
         fetchConnectedUsers();
@@ -17,8 +17,11 @@ const PrincipalPage = () => {
     }, []);
 
     const fetchConnectedUsers = () => {
+        const serverUrl = process.env.NODE_ENV === 'production' ? 'https://whatsapp-clon-1.vercel.app' : 'http://localhost:4000';
+        const url = `${serverUrl}/connectedUsers`;
+    
         // Send a request to the server to get the list of connected users
-        fetch('chat-lucia.vercel.app:4000/connectedUsers')
+        fetch(url)
             .then(response => response.json())
             .then(users => {
                 setConnectedUsers(users);
@@ -28,7 +31,6 @@ const PrincipalPage = () => {
                 console.error('Error fetching connected users:', error);
             });
     };
-
     return (
         <>
         <div className='principal-container'>
