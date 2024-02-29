@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-      origin: "https://chat-lucia.vercel.app/",
+      origin: "http://localhost:3000",
       methods: ["GET", "POST"]
     },
     reconnectionAttempts: 3, // Limit the number of reconnection attempts
