@@ -46,7 +46,7 @@
 }
 .app{
   background-color: #fcf5eb;
-  height: 100vh;
+  height: 120vh;
 }
 .container1{
   height: 80vh;
@@ -115,6 +115,7 @@
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #fff;
+  margin-top: 10rem;
 }
 
 .registro-container h2 {

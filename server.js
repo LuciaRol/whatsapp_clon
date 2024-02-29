@@ -1,12 +1,28 @@
-const express = require('express');
-const http = require('http');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var http = require('http');
+var PORT = process.env.PORT || 4000;
+
+var app = express();
+
+app.use(fileUpload());
+app.use(cors());
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+
 const socketIo = require('socket.io');
 const fileUpload = require('express-fileupload');
-const path = require('path');
+
 const { spawn } = require('child_process'); // Import spawn from child_process module
 const cors = require('cors'); // Import cors middleware
 
-const app = express();
+
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
@@ -18,14 +34,12 @@ const io = socketIo(server, {
     reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
 });
 
-// Use cors 
-app.use(cors());
 
-// Define an array to store connected users' information
+
+
+
 const connectedUsers = [];
 
-// Middleware for file uploads
-app.use(fileUpload());
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -42,7 +56,7 @@ io.on('connection', (socket) => {
         console.log('Received registration data:', username, profilePicture, status);
 
         // Save user information // se ha añadido el nick: para que sea un json valido
-        connectedUsers.push({ id: socket.id, username, profilePicture, status });
+        connectedUsers.push({ id: socket.id, nick: username, profilePicture, status });
         console.log('User registered:', username);
         console.log('Connected users:', connectedUsers);
 
@@ -158,7 +172,7 @@ app.get('/connectedUsers', (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 4000;
+
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 
