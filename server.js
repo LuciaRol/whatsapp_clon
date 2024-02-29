@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-      origin: "http://https://whatsapp-clon.vercel.app/:3000",
+      origin: "https://whatsapp-clon.vercel.app/:3000",
       methods: ["GET", "POST"]
     },
     reconnectionAttempts: 3, // Limit the number of reconnection attempts
