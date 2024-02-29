@@ -163,10 +163,10 @@ server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 
     // Automatically start the React development server
-    const reactServer = spawn('npm', ['start-server'], { stdio: 'inherit', shell: true });
+    //const reactServer = spawn('npm', ['start'], { stdio: 'inherit', shell: true });
 
-    reactServer.on('close', (code) => {
-        console.log(`React server exited with code ${code}`);
+    //reactServer.on('close', (code) => {
+    //    console.log(`React server exited with code ${code}`);
         // You can handle server close event here if needed
-    });
+    //});
 });
