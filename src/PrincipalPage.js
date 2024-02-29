@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const PrincipalPage = () => {
     const [connectedUsers, setConnectedUsers] = useState([]);
-    const socket = io('http://localhost:4000'); 
+    const socket = io('chat-lucia-git-main-lucias-projects-4febd059.vercel.app:4000'); 
     
     useEffect(() => {
         // Fetch initial list of connected users when component mounts
@@ -18,7 +18,7 @@ const PrincipalPage = () => {
 
     const fetchConnectedUsers = () => {
         // Send a request to the server to get the list of connected users
-        fetch('http://localhost:4000/connectedUsers')
+        fetch('chat-lucia-git-main-lucias-projects-4febd059.vercel.app:4000/connectedUsers')
             .then(response => response.json())
             .then(users => {
                 setConnectedUsers(users);
