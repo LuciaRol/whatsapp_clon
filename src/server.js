@@ -128,7 +128,9 @@ app.post('/register', (req, res) => {
                 res.status(500).send('Error saving profile picture');
             } else {
                 // Construct the imageUrl dynamically using the baseUrl received from the client
-                const imageUrl = `${baseUrl}/uploads/${fileName}`;
+
+                const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : process.env.PRODUCTION_URL;
+                const imageUrl = `${serverUrl}/uploads/${fileName}`;
                 // Send the URL of the uploaded image to the client along with the username
                 io.to(req.socketId).emit('registrationComplete', { username, profilePicture: imageUrl });
                 // Store user information on the server
