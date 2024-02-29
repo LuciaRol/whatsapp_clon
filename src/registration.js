@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import io from 'socket.io-client';
-import gatoFeliz from '../img/gato-feliz.jpg';
-import gatoGrunon from '../img/gato-grunon.jpg';
-import gato from '../img/gato.jpg';
+import gatoFeliz from './img/gato-feliz.jpg';
+import gatoGrunon from './img/gato-grunon.jpg';
+import gato from './img/gato.jpg';
 import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import app from './firebaseconfig';
 

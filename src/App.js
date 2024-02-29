@@ -1,10 +1,10 @@
 // App.js
 import React, { useState } from 'react';
-import Registration from './components/registration';
-import PrincipalPage from './components/PrincipalPage';
-import Chat from './components/Chat';
+import Registration from './registration';
+import PrincipalPage from './PrincipalPage';
+import Chat from './Chat';
 import './App.css';
-import Header from './components/Header';
+import Header from './Header';
 
 const App = () => {
     const [username, setUsername] = useState('');
