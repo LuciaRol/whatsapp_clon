@@ -28,7 +28,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 const io = socketIo(server, {
-    cors: process.env.NODE_ENV === 'production' ? undefined : {
+    cors: process.env.NODE_ENV === 'production' ? "https://whatsapp-clon-1.vercel.app" : {
         origin: "http://localhost:3000"
     },
     reconnectionAttempts: 3, // Limit the number of reconnection attempts
@@ -129,7 +129,7 @@ app.post('/register', (req, res) => {
             } else {
                 // Construct the imageUrl dynamically using the baseUrl received from the client
 
-                const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : process.env.PRODUCTION_URL;
+                const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://whatsapp-clon-1.vercel.app/';
                 const imageUrl = `${serverUrl}/uploads/${fileName}`;
                 // Send the URL of the uploaded image to the client along with the username
                 io.to(req.socketId).emit('registrationComplete', { username, profilePicture: imageUrl });
