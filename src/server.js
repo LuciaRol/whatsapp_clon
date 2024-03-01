@@ -10,8 +10,6 @@ const cors = require('cors'); // Import cors middleware
 const app = express();
 const server = http.createServer(app);
 
-var indexRouter = require('./routes/index');
-
 if (process.env.NODE_ENV !== 'production') {
     const cors = require('cors');
     app.use(cors({ origin: process.env.RENDER_EXTERNAL_URL }));
@@ -26,7 +24,11 @@ const connectedUsers = [];
 
 // Middleware for file uploads
 app.use(fileUpload());
-app.use('/', indexRouter);
+
+var router = express.Router();
+router.get('/', function(req, res, next) {
+    res.render('index', { title: 'Express' });
+  });
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
