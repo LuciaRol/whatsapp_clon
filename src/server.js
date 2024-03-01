@@ -27,7 +27,7 @@ app.use(fileUpload());
 
 var router = express.Router();
 router.get('/', function(req, res, next) {
-    const indexPath = path.join(__dirname, 'build', 'index.js');
+    const indexPath = path.join('../build/index.js');
     res.sendFile(indexPath);
 });
 
