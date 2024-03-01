@@ -17,7 +17,7 @@ const PrincipalPage = () => {
     }, []);
 
     const fetchConnectedUsers = () => {
-        const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://whatsapp-clon-1.vercel.app';
+        const serverUrl = process.env.NODE_ENV === 'development' ? 'https://whatsapp-clon-1.vercel.app' : 'https://whatsapp-clon-1.vercel.app';
         const url = `${serverUrl}/connectedUsers`;
     
         // Send a request to the server to get the list of connected users

@@ -12,7 +12,7 @@ const Registration = ({ onRegister }) => {
     const [username, setUsername] = useState('');
     const [profilePicture, setProfilePicture] = useState(null);
     const [status, setStatus] = useState('');
-    const socket = io(process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://whatsapp-clon-1.vercel.app');
+    const socket = io(process.env.NODE_ENV === 'development' ? 'https://whatsapp-clon-1.vercel.app' : 'https://whatsapp-clon-1.vercel.app');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [error, setError] = useState(null);
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
