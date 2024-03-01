@@ -26,7 +26,7 @@ const connectedUsers = [];
 app.use(fileUpload());
 
 app.route('/').get((req, res) => {
-    res.send('Get a random book')
+    res.sendFile(path.join(__dirname, 'build','index.js'));
   })
 
 // Serve uploaded images statically
