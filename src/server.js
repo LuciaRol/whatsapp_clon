@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const { Server } = require('socket.io');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const { spawn } = require('child_process'); // Import spawn from child_process module
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Use cors 
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Define an array to store connected users' information
 const connectedUsers = [];
@@ -27,14 +29,15 @@ app.use(fileUpload());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-const io = socketIo(server, {
+const io = new Server(server);
+/* const io = socketIo(server, {
     cors: process.env.NODE_ENV === 'production' ? "https://whatsapp-clon-1.vercel.app" : {
         origin: "http://localhost:3000"
     },
     reconnectionAttempts: 3, // Limit the number of reconnection attempts
     reconnectionDelay: 1000, // Initial delay before attempting to reconnect (in milliseconds)
     reconnectionDelayMax: 5000 // Maximum delay between reconnection attempts (in milliseconds)
-});
+}); */
 
 
 // Socket.io event handling
