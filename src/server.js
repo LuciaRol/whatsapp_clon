@@ -29,6 +29,9 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
   });
+
+app.use("/", router);
+
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -136,7 +139,7 @@ app.post('/register', (req, res) => {
             } else {
                 // Construct the imageUrl dynamically using the baseUrl received from the client
 
-                const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://whatsapp-clon-1.vercel.app/';
+                const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : process.env.RENDER_EXTERNAL_URL;
                 const imageUrl = `${serverUrl}/uploads/${fileName}`;
                 // Send the URL of the uploaded image to the client along with the username
                 io.to(req.socketId).emit('registrationComplete', { username, profilePicture: imageUrl });
