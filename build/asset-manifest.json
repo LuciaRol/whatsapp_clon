@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.19382efe.css",
+    "main.js": "/static/js/main.d0a7f38f.js",
+    "static/js/453.cdd321f6.chunk.js": "/static/js/453.cdd321f6.chunk.js",
+    "static/media/surprise.png": "/static/media/surprise.93e3db33173a76778568.png",
+    "static/media/gato-grunon.jpg": "/static/media/gato-grunon.b639f176e8421f4eb7ef.jpg",
+    "static/media/gato-feliz.jpg": "/static/media/gato-feliz.513be06efed7af84bc73.jpg",
+    "index.html": "/index.html",
+    "main.19382efe.css.map": "/static/css/main.19382efe.css.map",
+    "main.d0a7f38f.js.map": "/static/js/main.d0a7f38f.js.map",
+    "453.cdd321f6.chunk.js.map": "/static/js/453.cdd321f6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.19382efe.css",
+    "static/js/main.d0a7f38f.js"
+  ]
+}
