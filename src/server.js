@@ -26,7 +26,7 @@ const connectedUsers = [];
 app.use(fileUpload());
 
 app.route('/').get((req, res) => {
-    res.sendFile(path.join(__dirname, 'build','index.js'));
+    res.sendFile('../build/index.js');
   })
 
 // Serve uploaded images statically
