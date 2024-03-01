@@ -26,7 +26,7 @@ const connectedUsers = [];
 app.use(fileUpload());
 
 app.route('/').get((req, res) => {
-    res.sendFile(path.join(__dirname,  '..', 'build', 'index.js'));
+    res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.js'));
   })
 
 // Serve uploaded images statically
@@ -179,7 +179,7 @@ server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 
     // Automatically start the React development server
-    const reactServer = spawn('npm', ['start'], { stdio: 'inherit', shell: true });
+    const reactServer = spawn('npm', ['ejecutar_nodemon'], { stdio: 'inherit', shell: true });
 
     reactServer.on('close', (code) => {
         console.log(`React server exited with code ${code}`);
