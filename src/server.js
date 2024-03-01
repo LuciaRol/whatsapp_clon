@@ -25,13 +25,9 @@ const connectedUsers = [];
 // Middleware for file uploads
 app.use(fileUpload());
 
-var router = express.Router();
-router.get('/', function(req, res, next) {
-    const indexPath = path.join('../build/index.js');
-    res.sendFile(indexPath);
-});
-
-app.use("/", router);
+app.route('/').get((req, res) => {
+    res.send('Get a random book')
+  })
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
